@@ -1,4 +1,4 @@
-package com.org.ze_delivery_spring_boot_back_end_java.models;
+package com.org.ze_delivery_spring_boot_back_end_java.models.entities;
 
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
