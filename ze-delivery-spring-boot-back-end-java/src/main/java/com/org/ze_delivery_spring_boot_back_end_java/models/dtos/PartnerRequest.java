@@ -26,9 +26,15 @@ public class PartnerRequest {
 	@CNPJ(message = "documento invalido")
 	private String document;
 	
+	@NotEmpty(message = "tipo da area de cobertura vázio")
+	@NotNull(message = "tipo da area de cobertura nulo")
 	private String coverageAreaType; 
+	@NotNull(message = "coordenadas da area de cobertura nulo")
 	private MultiPolygon coverageAreaCoordinates;
 	
+	@NotEmpty(message = "tipo do endereço vázio")
+	@NotNull(message = "tipo do endereço nulo")
 	private String addressType;
+	@NotNull(message = "coordenadas do endereço nulo")
 	private List<AddressCoordinateRequest> addressCoordinateRequests;
 }
