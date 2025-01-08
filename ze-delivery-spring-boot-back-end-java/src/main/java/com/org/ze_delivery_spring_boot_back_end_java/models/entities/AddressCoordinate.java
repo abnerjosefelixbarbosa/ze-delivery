@@ -16,8 +16,8 @@ import lombok.NoArgsConstructor;
 public class AddressCoordinate {
 	@Id
 	private String id;
-	private Long x;
-	private Long y;
+	private Long longitude;
+	private Long latitude;
 	@ManyToOne
 	private Partner partner;
 }

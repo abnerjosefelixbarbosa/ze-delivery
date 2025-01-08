@@ -13,7 +13,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Embeddable
 public class CoverageArea {
-	private String coverageAreaType; 
-	@Column(columnDefinition = "geometry(MultiPolygon, 4326)")
-	private MultiPolygon coverageAreaCoordinates;
+	@Column(name = "coverage_area_type")
+	private String type; 
+	@Column(columnDefinition = "geometry(MultiPolygon, 4326)", name = "coverage_area_coordinates")
+	private MultiPolygon coordinates;
 }
