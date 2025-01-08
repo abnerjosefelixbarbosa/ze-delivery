@@ -5,6 +5,9 @@ import java.util.List;
 import org.hibernate.validator.constraints.br.CNPJ;
 import org.locationtech.jts.geom.MultiPolygon;
 
+import com.org.ze_delivery_spring_boot_back_end_java.models.enums.AddressType;
+import com.org.ze_delivery_spring_boot_back_end_java.models.enums.CoverageAreaType;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -28,13 +31,13 @@ public class PartnerRequest {
 	
 	@NotEmpty(message = "tipo da area de cobertura vázio")
 	@NotNull(message = "tipo da area de cobertura nulo")
-	private String coverageAreaType; 
+	private CoverageAreaType coverageAreaType; 
 	@NotNull(message = "coordenadas da area de cobertura nulo")
 	private MultiPolygon coverageAreaCoordinates;
 	
 	@NotEmpty(message = "tipo do endereço vázio")
 	@NotNull(message = "tipo do endereço nulo")
-	private String addressType;
+	private AddressType addressType;
 	@NotNull(message = "coordenadas do endereço nulo")
 	private List<AddressCoordinateRequest> addressCoordinateRequests;
 }
