@@ -1,4 +1,4 @@
-package com.org.ze_delivery_spring_boot_back_end_java.models.dtos;
+package com.org.ze_delivery_spring_boot_back_end_java.models.dtos.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

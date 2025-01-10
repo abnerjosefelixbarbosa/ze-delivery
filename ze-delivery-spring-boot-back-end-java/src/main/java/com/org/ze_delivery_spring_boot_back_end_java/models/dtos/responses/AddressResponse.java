@@ -1,11 +1,9 @@
-package com.org.ze_delivery_spring_boot_back_end_java.models.entities;
+package com.org.ze_delivery_spring_boot_back_end_java.models.dtos.responses;
 
 import java.util.Collection;
 
 import com.org.ze_delivery_spring_boot_back_end_java.models.enums.AddressType;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -13,10 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
-public class Address {
-	 @Column(name = "address_type")
+public class AddressResponse {
 	 private AddressType type;
-	 @Column(name = "address_coordinates", nullable = false)
 	 private Collection<Long> coordinates;
 }

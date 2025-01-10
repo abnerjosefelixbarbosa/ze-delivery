@@ -68,13 +68,26 @@
 		<dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-spatial</artifactId>
-            <version>5.6.15.Final</version> <!-- Ou a versão correspondente do Hibernate -->
+            <version>5.6.15.Final</version>
         </dependency>
         
         <dependency>
             <groupId>org.locationtech.jts</groupId>
             <artifactId>jts-core</artifactId>
             <version>1.19.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.springdoc</groupId>
+            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+            <version>2.7.0</version>
+        </dependency>
+        
+        <!-- https://mvnrepository.com/artifact/com.github.f4b6a3/ulid-creator -->
+        <dependency>
+            <groupId>com.github.f4b6a3</groupId>
+            <artifactId>ulid-creator</artifactId>
+            <version>5.2.3</version>
         </dependency>
 	</dependencies>
 

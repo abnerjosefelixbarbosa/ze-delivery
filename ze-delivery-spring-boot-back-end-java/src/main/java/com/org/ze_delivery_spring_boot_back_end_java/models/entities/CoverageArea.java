@@ -1,6 +1,6 @@
 package com.org.ze_delivery_spring_boot_back_end_java.models.entities;
 
-import org.locationtech.jts.geom.MultiPolygon;
+import java.util.Collection;
 
 import com.org.ze_delivery_spring_boot_back_end_java.models.enums.CoverageAreaType;
 
@@ -15,8 +15,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Embeddable
 public class CoverageArea {
-	@Column(name = "coverage_area_type")
+	@Column(name = "coverage_area_type", nullable = true)
 	private CoverageAreaType type; 
-	@Column(columnDefinition = "geometry(MultiPolygon, 4326)", name = "coverage_area_coordinates")
-	private MultiPolygon coordinates;
+	@Column(name = "coverage_area_coordinates", nullable = true)
+	private Collection<Collection<Collection<Long>>> coordinates;
 }
