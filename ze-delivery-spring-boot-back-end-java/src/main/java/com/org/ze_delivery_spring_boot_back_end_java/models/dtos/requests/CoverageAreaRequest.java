@@ -1,6 +1,6 @@
 package com.org.ze_delivery_spring_boot_back_end_java.models.dtos.requests;
 
-import java.util.Collection;
+import java.util.List;
 
 import com.org.ze_delivery_spring_boot_back_end_java.models.enums.CoverageAreaType;
 
@@ -13,5 +13,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CoverageAreaRequest {
 	CoverageAreaType type;
-	Collection<Collection<Collection<Long>>> coordinates;
+	List<List<List<Long>>> coordinates;
 }

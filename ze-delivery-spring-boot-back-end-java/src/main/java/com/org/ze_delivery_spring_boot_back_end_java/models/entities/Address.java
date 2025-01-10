@@ -1,7 +1,5 @@
 package com.org.ze_delivery_spring_boot_back_end_java.models.entities;
 
-import java.util.Collection;
-
 import com.org.ze_delivery_spring_boot_back_end_java.models.enums.AddressType;
 
 import jakarta.persistence.Column;
@@ -18,5 +16,5 @@ public class Address {
 	 @Column(name = "address_type")
 	 private AddressType type;
 	 @Column(name = "address_coordinates", nullable = false)
-	 private Collection<Long> coordinates;
+	 private String coordinates;
 }
