@@ -18,24 +18,57 @@ public class PartnerService implements IPartnersService {
 	private PartnerMapper partnerMapper;
 
 	public PartnerResponse createPartner(PartnerRequest request) {
+        validateCoverageAreaCoordinates(request);
+		
+		validateCoverageAreaType(request);
+		
+		validateAddressType(request);
+		
+		validateAddressCoordinates(request);
+		
 		Partner partner = partnerMapper.toPartner(request);
 		
-		validatePartner(partner);
+		validateDocument(partner);
 		
 		return partnerMapper.toPartnerResponse(partnerRepository.save(partner));
 	}
 
 	public PartnerResponse loadPartnerById(String id) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public PartnerResponse searchPartnerByLongAndLat(Long longitude, Long latitude) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 	
-	private void validatePartner(Partner partner) {
+	private void validateDocument(Partner partner) {
+		if (partnerRepository.existsByDocument(partner.getDocument()))
+			throw new RuntimeException("documento já existe");
+	}
+	
+	private void validateCoverageAreaType(PartnerRequest request) {
+		if (request.getCoverageArea().getType() == null)
+			throw new RuntimeException("tipo da area de cobertura não deve ser nulo");
+	}
+	
+	private void validateCoverageAreaCoordinates(PartnerRequest request) {
+		if (request.getCoverageArea().getCoordinates() == null)
+			throw new RuntimeException("coordenadas da area de coorbertura não deve ser nulo");
 		
+		if (request.getCoverageArea().getCoordinates().isEmpty())
+			throw new RuntimeException("coordenadas da area de coorbertura não deve ser vázia");
+	}
+	
+	private void validateAddressType(PartnerRequest request) {
+		if (request.getAddress().getType() == null)
+			throw new RuntimeException("tipo do endereço não deve ser nulo");
+	}
+	
+	private void validateAddressCoordinates(PartnerRequest request) {
+		if (request.getAddress().getCoordinates() == null)
+			throw new RuntimeException("coordenadas do endereço não deve ser nulo");
+		
+		if (request.getAddress().getCoordinates().isEmpty())
+			throw new RuntimeException("coordenadas do endereço não deve ser vázio");
 	}
 }

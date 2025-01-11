@@ -18,11 +18,11 @@ public class Partner {
 	@Id
 	@Column(name = "partner_id", nullable = false)
 	private String id;
-	@Column(name = "trading_name", length = 100, nullable = false)
+	@Column(name = "trading_name", nullable = false)
 	private String tradingName;
-	@Column(name = "owner_name", length = 100, nullable = false)
+	@Column(name = "owner_name", nullable = false)
 	private String ownerName;
-	@Column(name = "document", length = 14, nullable = false, unique = true)
+	@Column(name = "document", nullable = false, unique = true)
 	private String document;
 	@Embedded
 	private CoverageArea coverageArea;

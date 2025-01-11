@@ -7,5 +7,5 @@ import com.org.ze_delivery_spring_boot_back_end_java.models.entities.Partner;
 
 @Repository
 public interface IPartnerRepository extends JpaRepository<Partner, String> {
-
+	boolean existsByDocument(String document);
 }

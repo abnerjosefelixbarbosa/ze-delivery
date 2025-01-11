@@ -1,11 +1,11 @@
 package com.org.ze_delivery_spring_boot_back_end_java.models.mapper;
 
-import java.util.Arrays;
+import java.math.BigDecimal;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Component;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.f4b6a3.ulid.UlidCreator;
 import com.org.ze_delivery_spring_boot_back_end_java.models.dtos.requests.PartnerRequest;
@@ -21,33 +21,33 @@ public class PartnerMapper {
 	private ObjectMapper objectMapper = new ObjectMapper();
 	
 	public Partner toPartner(PartnerRequest request) {
-		List<List<List<Long>>> getCoverageArea = request.getCoverageArea().getCoordinates();
-		String resultGetCoverageArea = getCoverageArea.stream().map(String::valueOf).collect(Collectors.joining(","));
-		
-		List<Long> getAddress = request.getAddress().getCoordinates();
-		String resultGetAddress = getAddress.stream().map(String::valueOf).collect(Collectors.joining(","));
-		
-		CoverageArea coverageArea = new CoverageArea(request.getCoverageArea().getType(), resultGetCoverageArea);
-		Address address = new Address(request.getAddress().getAddressType(), resultGetAddress);
-		
-		return new Partner(UlidCreator.getUlid().toString(), request.getTradingName(), request.getOwnerName(), request.getDocument(), coverageArea, address);
+		try {
+			String objectCoverageAreaCoordinates = objectMapper.writeValueAsString(request.getCoverageArea().getCoordinates());
+			String objectAddressCoordinates = objectMapper.writeValueAsString(request.getAddress().getCoordinates());
+			
+			CoverageArea coverageArea = new CoverageArea(request.getCoverageArea().getType(), objectCoverageAreaCoordinates);
+			Address address = new Address(request.getAddress().getType(), objectAddressCoordinates);
+			
+			return new Partner(UlidCreator.getUlid().toString(), request.getTradingName(), request.getOwnerName(), request.getDocument(), coverageArea, address);
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
 	}
 	
 	public PartnerResponse toPartnerResponse(Partner partner) {
 		try {
-			List<List<List<Long>>> getCoverageArea = objectMapper.readValue(partner.getCoverageArea().getCoordinates(), );
+			String objectCoverageAreaCoordinates = partner.getCoverageArea().getCoordinates();
+			List<List<List<BigDecimal>>> coverageAreaCoordinates = objectMapper.readValue(objectCoverageAreaCoordinates, new TypeReference<List<List<List<BigDecimal>>>>() {});
+
+			String objectAddressCoordinates = partner.getAddress().getCoordinates();
+			List<BigDecimal> addressCoordinates = objectMapper.readValue(objectAddressCoordinates, new TypeReference<List<BigDecimal>>() {});
 			
-			//String resultGetAddress = partner.getAddress().getCoordinates();
-			//List<Long> getAddress = Arrays.stream(resultGetAddress.split(",")).map(Long::valueOf).collect(Collectors.toList());
+			CoverageAreaResponse coverageAreaResponse = new CoverageAreaResponse(partner.getCoverageArea().getType(), coverageAreaCoordinates);
+			AddressResponse addressResponse = new AddressResponse(partner.getAddress().getType(), addressCoordinates);
 			
-			CoverageAreaResponse coverageAreaResponse = new CoverageAreaResponse(partner.getCoverageArea().getType(), null);
-			AddressResponse addressResponse = new AddressResponse(partner.getAddress().getType(), null);
+			return new PartnerResponse(partner.getId(), partner.getTradingName(), partner.getOwnerName(), partner.getDocument(), coverageAreaResponse, addressResponse);
 		} catch (Exception e) {
-			// TODO: handle exception
+			throw new RuntimeException(e.getMessage());
 		}
-		
-		
-		
-		return new PartnerResponse(partner.getId(), partner.getTradingName(), partner.getOwnerName(), partner.getDocument(), coverageAreaResponse, addressResponse);
 	}
 }
