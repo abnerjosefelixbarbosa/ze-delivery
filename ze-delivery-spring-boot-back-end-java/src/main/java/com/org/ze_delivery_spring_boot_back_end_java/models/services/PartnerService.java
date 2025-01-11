@@ -1,8 +1,15 @@
 package com.org.ze_delivery_spring_boot_back_end_java.models.services;
 
+import java.math.BigDecimal;
+import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.org.ze_delivery_spring_boot_back_end_java.models.dtos.requests.PartnerRequest;
 import com.org.ze_delivery_spring_boot_back_end_java.models.dtos.responses.PartnerResponse;
 import com.org.ze_delivery_spring_boot_back_end_java.models.entities.Partner;
@@ -16,6 +23,7 @@ public class PartnerService implements IPartnersService {
 	private IPartnerRepository partnerRepository;
 	@Autowired
 	private PartnerMapper partnerMapper;
+	private ObjectMapper objectMapper = new ObjectMapper();
 
 	public PartnerResponse createPartner(PartnerRequest request) {
         validateCoverageAreaCoordinates(request);
@@ -34,11 +42,26 @@ public class PartnerService implements IPartnersService {
 	}
 
 	public PartnerResponse loadPartnerById(String id) {
-		return null;
+		return partnerMapper.toPartnerResponse(partnerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("parceiro não encontrado")));
 	}
 
-	public PartnerResponse searchPartnerByLongAndLat(Long longitude, Long latitude) {
-		return null;
+	public PartnerResponse searchPartnerByLongAndLat(BigDecimal longitude, BigDecimal latitude) {
+		List<Partner> partners = partnerRepository.findAll();
+			
+		return partnerMapper.toPartnerResponse(
+				partners.stream().filter((partner) -> {
+					try {
+						List<BigDecimal> addressCoordinates = objectMapper.readValue(partner.getAddress().getCoordinates(), new TypeReference<List<BigDecimal>>() {});
+							
+						if (addressCoordinates.get(0) == longitude && addressCoordinates.get(1) == latitude)
+							return true;
+							
+						return false;
+					} catch (Exception e) {
+						throw new RuntimeException(e.getMessage());
+					}
+				}).findFirst().get()
+		);
 	}
 	
 	private void validateDocument(Partner partner) {

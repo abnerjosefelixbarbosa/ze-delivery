@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -34,9 +36,16 @@ public class ExcepitionController {
 	
 	
 	@ExceptionHandler(RuntimeException.class)
-	public ResponseEntity<ExceptionResponse> handleNotFoundException(RuntimeException e, HttpServletRequest request) {
+	public ResponseEntity<ExceptionResponse> handleRuntimeException(RuntimeException e, HttpServletRequest request) {
 		ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), 400, e.getMessage(), request.getRequestURI());
 		
 		return ResponseEntity.status(400).body(exceptionResponse);
+	}
+	
+	@ExceptionHandler(EntityNotFoundException.class)
+	public ResponseEntity<ExceptionResponse> handleNotFoundException(EntityNotFoundException e, HttpServletRequest request) {
+		ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), 404, e.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(404).body(exceptionResponse);
 	}
 }

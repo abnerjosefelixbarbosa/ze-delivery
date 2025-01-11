@@ -1,5 +1,7 @@
 package com.org.ze_delivery_spring_boot_back_end_java.controllers;
 
+import java.math.BigDecimal;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +34,12 @@ public class PartnersController {
 	@GetMapping(value = "/load-partner-by-id")
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<PartnerResponse> loadPartnerById(@RequestParam String id) {
-		return ResponseEntity.status(HttpStatus.OK).body(null);
+		return ResponseEntity.status(HttpStatus.OK).body(partnersService.loadPartnerById(id));
 	}
 	
 	@GetMapping(value = "/search-partner-by-longitude-and-latitude")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<PartnerResponse> searchPartnerByLongAndLat(@RequestParam Long longitude, @RequestParam Long latitude) {
-		return ResponseEntity.status(HttpStatus.OK).body(null);
+	public ResponseEntity<PartnerResponse> searchPartnerByLongAndLat(@RequestParam BigDecimal longitude, @RequestParam BigDecimal latitude) {
+		return ResponseEntity.status(HttpStatus.OK).body(partnersService.searchPartnerByLongAndLat(longitude, latitude));
 	}
 }
