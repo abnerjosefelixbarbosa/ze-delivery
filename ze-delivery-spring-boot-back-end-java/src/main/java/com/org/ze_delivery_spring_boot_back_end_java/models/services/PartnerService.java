@@ -47,21 +47,49 @@ public class PartnerService implements IPartnersService {
 
 	public PartnerResponse searchPartnerByLongAndLat(BigDecimal longitude, BigDecimal latitude) {
 		List<Partner> partners = partnerRepository.findAll();
+		
+		return partnerMapper.toPartnerResponse(partners.stream()
+				.filter((partner) -> fillterPartners(partner, longitude, latitude))
+				.findFirst()
+				.orElseThrow(() -> new EntityNotFoundException("parceiro não encontrado")));
+	}
+	
+	private boolean fillterPartners(Partner partner, BigDecimal longitude, BigDecimal latitude) {
+		
+		try {
+			List<BigDecimal> coordinates = objectMapper.readValue(partner.getAddress().getCoordinates(), new TypeReference<List<BigDecimal>>() {});
+			Double shortestDistance = Double.MAX_VALUE;
 			
-		return partnerMapper.toPartnerResponse(
-				partners.stream().filter((partner) -> {
-					try {
-						List<BigDecimal> addressCoordinates = objectMapper.readValue(partner.getAddress().getCoordinates(), new TypeReference<List<BigDecimal>>() {});
-							
-						if (addressCoordinates.get(0) == longitude && addressCoordinates.get(1) == latitude)
-							return true;
-							
-						return false;
-					} catch (Exception e) {
-						throw new RuntimeException(e.getMessage());
-					}
-				}).findFirst().get()
-		);
+			Double distance = calculateDistance(longitude, latitude, coordinates.get(0), coordinates.get(1));
+			
+			if (distance < shortestDistance) {
+				return true;
+            }
+				
+			return false;
+		} catch (Exception e) {
+			throw new RuntimeException(e.getMessage());
+		}
+	}
+	
+	private Double calculateDistance(BigDecimal longitude1, BigDecimal latitude1, BigDecimal longitude2, BigDecimal latitude2) {
+		final Double RAD = 6371.0; 
+		
+		Double latitude1Rad = Math.toRadians(latitude1.doubleValue());
+		Double longitude1Rad = Math.toRadians(longitude1.doubleValue());
+		Double latitude2Rad = Math.toRadians(latitude2.doubleValue());
+		Double longitude2Rad = Math.toRadians(longitude2.doubleValue());
+		
+		Double deltaLatitude = latitude2Rad - latitude1Rad;
+		Double deltaLongitude = longitude2Rad - longitude1Rad;
+        
+		Double formula = Math.sin(deltaLatitude / 2) * Math.sin(deltaLatitude / 2) +
+                         Math.cos(latitude1Rad) * Math.cos(latitude2Rad) *
+                         Math.sin(deltaLongitude / 2) * Math.sin(deltaLongitude / 2);
+
+		Double result = 2 * Math.atan2(Math.sqrt(formula), Math.sqrt(1 - formula));
+		
+		return RAD * result;
 	}
 	
 	private void validateDocument(Partner partner) {
