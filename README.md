@@ -14,7 +14,7 @@ Aplicação de geolocalização de parceiros.
 - Carregar parceiro pelo id.
 - Pesquisar parceiro pela longitude e latitude.
 
-# Recusos do projeto
+# Recusos Do Projeto
 
 ## Ze Delivery Spring Boot Back End Java
 
