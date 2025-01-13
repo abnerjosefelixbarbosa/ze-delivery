@@ -45,7 +45,7 @@ public class PartnerService implements IPartnersService {
 		return partnerMapper.toPartnerResponse(partnerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("parceiro não encontrado")));
 	}
 
-	public PartnerResponse searchPartnerByLongAndLat(BigDecimal longitude, BigDecimal latitude) {
+	public PartnerResponse searchPartnerByLongitudeAndLatitude(BigDecimal longitude, BigDecimal latitude) {
 		List<Partner> partners = partnerRepository.findAll();
 		
 		Partner closestPartner = partners.stream()

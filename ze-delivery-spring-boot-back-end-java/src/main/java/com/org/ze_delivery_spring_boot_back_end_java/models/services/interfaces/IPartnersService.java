@@ -10,5 +10,5 @@ public interface IPartnersService {
 	
 	PartnerResponse loadPartnerById(String id);
 	
-	PartnerResponse searchPartnerByLongAndLat(BigDecimal longitude, BigDecimal latitude);
+	PartnerResponse searchPartnerByLongitudeAndLatitude(BigDecimal longitude, BigDecimal latitude);
 }
