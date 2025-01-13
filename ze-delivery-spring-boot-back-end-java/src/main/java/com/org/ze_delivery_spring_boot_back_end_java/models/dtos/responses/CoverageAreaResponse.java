@@ -14,5 +14,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CoverageAreaResponse {
 	private CoverageAreaType type; 
-	private List<List<List<BigDecimal>>> coordinates;
+	private List<List<List<List<BigDecimal>>>> coordinates;;
 }

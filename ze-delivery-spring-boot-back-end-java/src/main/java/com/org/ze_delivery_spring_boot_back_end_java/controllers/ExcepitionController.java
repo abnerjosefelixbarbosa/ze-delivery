@@ -48,4 +48,11 @@ public class ExcepitionController {
 		
 		return ResponseEntity.status(404).body(exceptionResponse);
 	}
+	
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity<ExceptionResponse> handleException(Exception e, HttpServletRequest request) {
+		ExceptionResponse exceptionResponse = new ExceptionResponse(LocalDateTime.now(), 500, e.getMessage(), request.getRequestURI());
+		
+		return ResponseEntity.status(500).body(exceptionResponse);
+	}
 }

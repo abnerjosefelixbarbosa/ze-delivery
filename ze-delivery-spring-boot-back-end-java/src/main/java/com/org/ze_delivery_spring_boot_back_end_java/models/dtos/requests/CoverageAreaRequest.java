@@ -17,5 +17,5 @@ import lombok.NoArgsConstructor;
 public class CoverageAreaRequest {
 	@Enumerated(EnumType.STRING)
 	CoverageAreaType type;
-	List<List<List<BigDecimal>>> coordinates;
+	List<List<List<List<BigDecimal>>>> coordinates;
 }

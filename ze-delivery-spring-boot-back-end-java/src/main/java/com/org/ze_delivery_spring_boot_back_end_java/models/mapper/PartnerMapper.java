@@ -37,7 +37,7 @@ public class PartnerMapper {
 	public PartnerResponse toPartnerResponse(Partner partner) {
 		try {
 			String objectCoverageAreaCoordinates = partner.getCoverageArea().getCoordinates();
-			List<List<List<BigDecimal>>> coverageAreaCoordinates = objectMapper.readValue(objectCoverageAreaCoordinates, new TypeReference<List<List<List<BigDecimal>>>>() {});
+			List<List<List<List<BigDecimal>>>> coverageAreaCoordinates = objectMapper.readValue(objectCoverageAreaCoordinates, new TypeReference<List<List<List<List<BigDecimal>>>>>() {});
 
 			String objectAddressCoordinates = partner.getAddress().getCoordinates();
 			List<BigDecimal> addressCoordinates = objectMapper.readValue(objectAddressCoordinates, new TypeReference<List<BigDecimal>>() {});

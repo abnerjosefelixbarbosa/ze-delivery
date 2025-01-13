@@ -1,7 +1,5 @@
 package com.org.ze_delivery_spring_boot_back_end_java.models.dtos.requests;
 
-import org.hibernate.validator.constraints.Length;
-
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -20,8 +18,6 @@ public class PartnerRequest {
 	private String ownerName;
 	@NotEmpty(message = "document não deve ser vázio")
 	@NotNull(message = "document não deve ser nulo")
-	//@CNPJ(message = "cnpj não deve ser invalido")
-	@Length(min = 17, message = "document deve ser de tamanho minimo 17")
 	private String document;
 	
 	@NotNull(message = "coverage area não deve ser nulo")

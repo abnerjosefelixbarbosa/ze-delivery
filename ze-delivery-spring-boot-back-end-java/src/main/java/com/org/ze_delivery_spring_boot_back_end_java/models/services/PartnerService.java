@@ -48,28 +48,46 @@ public class PartnerService implements IPartnersService {
 	public PartnerResponse searchPartnerByLongAndLat(BigDecimal longitude, BigDecimal latitude) {
 		List<Partner> partners = partnerRepository.findAll();
 		
-		return partnerMapper.toPartnerResponse(partners.stream()
-				.filter((partner) -> fillterPartners(partner, longitude, latitude))
-				.findFirst()
-				.orElseThrow(() -> new EntityNotFoundException("parceiro não encontrado")));
+		Partner closestPartner = partners.stream()
+				.min((partner1, partner2) -> {
+					Double distance1 = calculateDistance(
+			                longitude, latitude,
+			                getLongitude(partner1), getLatitude(partner1)
+			            );
+			        Double distance2 = calculateDistance(
+			                longitude, latitude,
+			                getLongitude(partner2), getLatitude(partner2)
+			        );
+			        
+			        return distance1.compareTo(distance2);
+				})
+				.orElseThrow(() -> new EntityNotFoundException("parceiro não encontrado"));
+		
+		return partnerMapper.toPartnerResponse(closestPartner);
 	}
 	
-	private boolean fillterPartners(Partner partner, BigDecimal longitude, BigDecimal latitude) {
-		
-		try {
-			List<BigDecimal> coordinates = objectMapper.readValue(partner.getAddress().getCoordinates(), new TypeReference<List<BigDecimal>>() {});
-			Double shortestDistance = Double.MAX_VALUE;
-			
-			Double distance = calculateDistance(longitude, latitude, coordinates.get(0), coordinates.get(1));
-			
-			if (distance < shortestDistance) {
-				return true;
-            }
-				
-			return false;
-		} catch (Exception e) {
-			throw new RuntimeException(e.getMessage());
-		}
+	private BigDecimal getLongitude(Partner partner) {
+	    try {
+	        List<BigDecimal> coordinates = objectMapper.readValue(
+	            partner.getAddress().getCoordinates(),
+	            new TypeReference<List<BigDecimal>>() {}
+	        );
+	        return coordinates.get(0);
+	    } catch (Exception e) {
+	        throw new RuntimeException("Erro ao obter a longitude do parceiro: " + e.getMessage());
+	    }
+	}
+
+	private BigDecimal getLatitude(Partner partner) {
+	    try {
+	        List<BigDecimal> coordinates = objectMapper.readValue(
+	            partner.getAddress().getCoordinates(),
+	            new TypeReference<List<BigDecimal>>() {}
+	        );
+	        return coordinates.get(1);
+	    } catch (Exception e) {
+	        throw new RuntimeException("Erro ao obter a latitude do parceiro: " + e.getMessage());
+	    }
 	}
 	
 	private Double calculateDistance(BigDecimal longitude1, BigDecimal latitude1, BigDecimal longitude2, BigDecimal latitude2) {
