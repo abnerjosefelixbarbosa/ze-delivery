@@ -49,21 +49,28 @@ public class PartnerService implements IPartnersService {
 		List<Partner> partners = partnerRepository.findAll();
 		
 		Partner closestPartner = partners.stream()
-				.min((partner1, partner2) -> {
-					Double distance1 = calculateDistance(
-			                longitude, latitude,
-			                getLongitude(partner1), getLatitude(partner1)
-			            );
-			        Double distance2 = calculateDistance(
-			                longitude, latitude,
-			                getLongitude(partner2), getLatitude(partner2)
-			        );
-			        
-			        return distance1.compareTo(distance2);
-				})
+				.min((Partner partner1, Partner partner2) -> compareDistance(partner1, partner2, longitude, latitude))
 				.orElseThrow(() -> new EntityNotFoundException("parceiro não encontrado"));
 		
 		return partnerMapper.toPartnerResponse(closestPartner);
+	}
+	
+	private Integer compareDistance(Partner partner1, Partner partner2, BigDecimal longitude, BigDecimal latitude) {
+		Double distance1 = calculateDistance(
+                longitude,
+                latitude,
+                getLongitude(partner1),
+                getLatitude(partner1)
+        );
+		
+        Double distance2 = calculateDistance(
+                longitude,
+                latitude,
+                getLongitude(partner2),
+                getLatitude(partner2)
+        );
+        
+        return distance1.compareTo(distance2);
 	}
 	
 	private BigDecimal getLongitude(Partner partner) {
@@ -72,6 +79,7 @@ public class PartnerService implements IPartnersService {
 	            partner.getAddress().getCoordinates(),
 	            new TypeReference<List<BigDecimal>>() {}
 	        );
+	        
 	        return coordinates.get(0);
 	    } catch (Exception e) {
 	        throw new RuntimeException("Erro ao obter a longitude do parceiro: " + e.getMessage());
@@ -84,6 +92,7 @@ public class PartnerService implements IPartnersService {
 	            partner.getAddress().getCoordinates(),
 	            new TypeReference<List<BigDecimal>>() {}
 	        );
+	        
 	        return coordinates.get(1);
 	    } catch (Exception e) {
 	        throw new RuntimeException("Erro ao obter a latitude do parceiro: " + e.getMessage());
@@ -111,33 +120,40 @@ public class PartnerService implements IPartnersService {
 	}
 	
 	private void validateDocument(Partner partner) {
-		if (partnerRepository.existsByDocument(partner.getDocument()))
-			throw new RuntimeException("documento já existe");
+		if (partnerRepository.existsByDocument(partner.getDocument())) {
+			throw new RuntimeException("Documento já existe");
+		}
 	}
 	
 	private void validateCoverageAreaType(PartnerRequest request) {
-		if (request.getCoverageArea().getType() == null)
-			throw new RuntimeException("tipo da area de cobertura não deve ser nulo");
+		if (request.getCoverageArea().getType() == null) {
+			throw new RuntimeException("Tipo da area de cobertura não deve ser nulo");
+		}
 	}
 	
 	private void validateCoverageAreaCoordinates(PartnerRequest request) {
-		if (request.getCoverageArea().getCoordinates() == null)
-			throw new RuntimeException("coordenadas da area de coorbertura não deve ser nulo");
+		if (request.getCoverageArea().getCoordinates() == null) {
+			throw new RuntimeException("Coordenadas da area de coorbertura não deve ser nulo");
+	    }
 		
-		if (request.getCoverageArea().getCoordinates().isEmpty())
-			throw new RuntimeException("coordenadas da area de coorbertura não deve ser vázia");
+		if (request.getCoverageArea().getCoordinates().isEmpty()) {
+			throw new RuntimeException("Coordenadas da area de coorbertura não deve ser vázia");
+		}
 	}
 	
 	private void validateAddressType(PartnerRequest request) {
-		if (request.getAddress().getType() == null)
-			throw new RuntimeException("tipo do endereço não deve ser nulo");
+		if (request.getAddress().getType() == null) {
+			throw new RuntimeException("Tipo do endereço não deve ser nulo");
+	    }
 	}
 	
 	private void validateAddressCoordinates(PartnerRequest request) {
-		if (request.getAddress().getCoordinates() == null)
-			throw new RuntimeException("coordenadas do endereço não deve ser nulo");
+		if (request.getAddress().getCoordinates() == null) {
+			throw new RuntimeException("Coordenadas do endereço não deve ser nulo");
+	    }
 		
-		if (request.getAddress().getCoordinates().isEmpty())
-			throw new RuntimeException("coordenadas do endereço não deve ser vázio");
+		if (request.getAddress().getCoordinates().isEmpty()) {
+			throw new RuntimeException("Coordenadas do endereço não deve ser vázio");
+	    }
 	}
 }

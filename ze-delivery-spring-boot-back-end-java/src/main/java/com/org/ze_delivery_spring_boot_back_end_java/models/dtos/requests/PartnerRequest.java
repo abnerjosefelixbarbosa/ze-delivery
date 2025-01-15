@@ -10,20 +10,20 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PartnerRequest {
-	@NotEmpty(message = "nome comercial não deve ser vázio")
-	@NotNull(message = "nome comercial não deve ser nulo")
+	@NotEmpty(message = "Nome comercial não deve ser vázio")
+	@NotNull(message = "Nome comercial não deve ser nulo")
 	private String tradingName;
-	@NotEmpty(message = "nome do proprietário não deve ser vázio")
-	@NotNull(message = "nome do proprietário não deve ser nulo")
+	@NotEmpty(message = "Nome do proprietário não deve ser vázio")
+	@NotNull(message = "Nome do proprietário não deve ser nulo")
 	private String ownerName;
-	@NotEmpty(message = "document não deve ser vázio")
-	@NotNull(message = "document não deve ser nulo")
+	@NotEmpty(message = "Document não deve ser vázio")
+	@NotNull(message = "Document não deve ser nulo")
 	private String document;
 	
-	@NotNull(message = "coverage area não deve ser nulo")
+	@NotNull(message = "Coverage area não deve ser nulo")
 	private CoverageAreaRequest coverageArea;
 	
-	@NotNull(message = "address não deve ser nulo")
+	@NotNull(message = "Address não deve ser nulo")
 	private AddressRequest address;
 	
 	
