@@ -8,6 +8,10 @@ Aplicação de geolocalização de parceiros.
 
 ## Modelo
 
+![class-diagram-entities](https://github.com/user-attachments/assets/3082f46f-13f6-4d49-bafa-1e63f8791bc2)
+
+![class-diagram-enums](https://github.com/user-attachments/assets/ec11d698-1c58-4a7f-8080-5bb9e1900409)
+
 # Fucionalidades
 
 - Criar parceiro.
