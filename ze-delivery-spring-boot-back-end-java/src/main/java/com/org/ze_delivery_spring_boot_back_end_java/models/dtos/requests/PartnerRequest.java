@@ -25,7 +25,4 @@ public class PartnerRequest {
 	
 	@NotNull(message = "Address não deve ser nulo")
 	private AddressRequest address;
-	
-	
-	
 }
