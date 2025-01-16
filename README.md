@@ -32,7 +32,6 @@ Geolocalização de parceiros.
 - SOLID.
 - Swagger.
 - H2 SQL.
-- JUnit 5.
 - Lombok.
 - Validation.
 - Ulid Creator.
