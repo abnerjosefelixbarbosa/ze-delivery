@@ -14,7 +14,7 @@ Geolocalização de parceiros.
 
 ### Enumerações
 
-![class-diagram-enums](https://github.com/user-attachments/assets/ec11d698-1c58-4a7f-8080-5bb9e1900409)
+![class-diagram-enums](https://github.com/user-attachments/assets/60bd7bf4-8e48-4aba-b7eb-379d2cc87653)
 
 # Fucionalidades
 
