@@ -22,32 +22,26 @@ public class PartnerMapper {
 	
 	public Partner toPartner(PartnerRequest request) {
 		try {
-			String objectCoverageAreaCoordinates = objectMapper
-					.writeValueAsString(
-							request.getCoverageArea().getCoordinates()
-					);
-			String objectAddressCoordinates = objectMapper
-					.writeValueAsString(
-							request.getAddress().getCoordinates()
-					);
+			String objectCoverageAreaCoordinates = objectMapper.writeValueAsString(request.getCoverageArea().getCoordinates());
+			String objectAddressCoordinates = objectMapper.writeValueAsString(request.getAddress().getCoordinates());
 			
-			CoverageArea coverageArea = new CoverageArea(
-					request.getCoverageArea().getType(),
-					objectCoverageAreaCoordinates
-		    );
-			Address address = new Address(
-					request.getAddress().getType(),
-					objectAddressCoordinates
-			);
+			CoverageArea coverageArea = new CoverageArea();
+			coverageArea.setType(request.getCoverageArea().getType());
+			coverageArea.setCoordinate(objectCoverageAreaCoordinates);
 			
-			return new Partner(
-					UlidCreator.getUlid().toString(),
-					request.getTradingName(),
-					request.getOwnerName(),
-					request.getDocument(),
-					coverageArea,
-					address
-			);
+			Address address = new Address();
+			address.setType(request.getAddress().getType());
+			address.setCoordinate(objectAddressCoordinates);
+			
+			Partner partner = new Partner();
+			partner.setAddress(address);
+			partner.setCoverageArea(coverageArea);
+			partner.setDocument(request.getDocument());
+			partner.setId(UlidCreator.getUlid().toString());
+			partner.setOwnerName(request.getOwnerName());
+			partner.setTradingName(request.getTradingName());
+			
+			return partner;
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}
@@ -55,35 +49,29 @@ public class PartnerMapper {
 	
 	public PartnerResponse toPartnerResponse(Partner partner) {
 		try {
-			String objectCoverageAreaCoordinates = partner.getCoverageArea().getCoordinates();
-			List<List<List<List<BigDecimal>>>> coverageAreaCoordinates = objectMapper.readValue(
-					objectCoverageAreaCoordinates,
-					new TypeReference<List<List<List<List<BigDecimal>>>>>() {}
-			);
+			String objectCoverageAreaCoordinates = partner.getCoverageArea().getCoordinate();
+			List<List<List<List<BigDecimal>>>> coverageAreaCoordinate = objectMapper.readValue(objectCoverageAreaCoordinates, new TypeReference<List<List<List<List<BigDecimal>>>>>() {});
 
-			String objectAddressCoordinates = partner.getAddress().getCoordinates();
-			List<BigDecimal> addressCoordinates = objectMapper.readValue(
-					objectAddressCoordinates,
-					new TypeReference<List<BigDecimal>>() {}
-			);
+			String objectAddressCoordinates = partner.getAddress().getCoordinate();
+			List<BigDecimal> addressCoordinate = objectMapper.readValue(objectAddressCoordinates, new TypeReference<List<BigDecimal>>() {});
 			
-			CoverageAreaResponse coverageAreaResponse = new CoverageAreaResponse(
-					partner.getCoverageArea().getType(),
-					coverageAreaCoordinates
-			);
-			AddressResponse addressResponse = new AddressResponse(
-					partner.getAddress().getType(),
-					addressCoordinates
-			);
+			CoverageAreaResponse coverageAreaResponse = new CoverageAreaResponse();
+			coverageAreaResponse.setType(partner.getCoverageArea().getType());
+			coverageAreaResponse.setCoordinates(coverageAreaCoordinate);
 			
-			return new PartnerResponse(
-					partner.getId(),
-					partner.getTradingName(),
-					partner.getOwnerName(),
-					partner.getDocument(),
-					coverageAreaResponse,
-					addressResponse
-			);
+			AddressResponse addressResponse = new AddressResponse();
+			addressResponse.setType(partner.getAddress().getType());
+			addressResponse.setCoordinates(addressCoordinate);
+			
+			PartnerResponse partnerResponse = new PartnerResponse();
+			partnerResponse.setId(partner.getId());
+			partnerResponse.setAddress(addressResponse);
+			partnerResponse.setCoverageArea(coverageAreaResponse);
+			partnerResponse.setDocument(partner.getDocument());
+			partnerResponse.setOwnerName(partner.getOwnerName());
+			partnerResponse.setTradingName(partner.getTradingName());
+			
+			return partnerResponse;
 		} catch (Exception e) {
 			throw new RuntimeException(e.getMessage());
 		}

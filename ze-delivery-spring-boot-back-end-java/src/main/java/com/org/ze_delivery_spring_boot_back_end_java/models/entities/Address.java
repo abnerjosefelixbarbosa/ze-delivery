@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class Address {
 	 @Column(name = "address_type")
 	 private AddressType type;
-	 @Column(name = "address_coordinates", nullable = false)
-	 private String coordinates;
+	 @Column(name = "address_coordinate", nullable = false)
+	 private String coordinate;
 }

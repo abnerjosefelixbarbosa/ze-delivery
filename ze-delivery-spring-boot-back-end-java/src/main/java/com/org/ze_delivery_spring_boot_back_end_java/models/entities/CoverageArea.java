@@ -15,6 +15,6 @@ import lombok.NoArgsConstructor;
 public class CoverageArea {
 	@Column(name = "coverage_area_type", nullable = true)
 	private CoverageAreaType type; 
-	@Column(name = "coverage_area_coordinates", nullable = true, length = 1000)
-	private String coordinates;
+	@Column(name = "coverage_area_coordinate", nullable = true, length = 1000)
+	private String coordinate;
 }

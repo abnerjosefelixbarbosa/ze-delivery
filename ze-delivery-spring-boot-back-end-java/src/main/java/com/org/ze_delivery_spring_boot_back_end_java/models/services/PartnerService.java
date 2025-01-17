@@ -56,29 +56,16 @@ public class PartnerService implements IPartnersService {
 	}
 	
 	private Integer compareDistance(Partner partner1, Partner partner2, BigDecimal longitude, BigDecimal latitude) {
-		Double distance1 = calculateDistance(
-                longitude,
-                latitude,
-                getLongitude(partner1),
-                getLatitude(partner1)
-        );
+		Double distance1 = calculateDistance(longitude, latitude, getLongitude(partner1), getLatitude(partner1));
 		
-        Double distance2 = calculateDistance(
-                longitude,
-                latitude,
-                getLongitude(partner2),
-                getLatitude(partner2)
-        );
+        Double distance2 = calculateDistance(longitude,latitude,getLongitude(partner2),getLatitude(partner2));
         
         return distance1.compareTo(distance2);
 	}
 	
 	private BigDecimal getLongitude(Partner partner) {
 	    try {
-	        List<BigDecimal> coordinates = objectMapper.readValue(
-	            partner.getAddress().getCoordinates(),
-	            new TypeReference<List<BigDecimal>>() {}
-	        );
+	        List<BigDecimal> coordinates = objectMapper.readValue(partner.getAddress().getCoordinate(),new TypeReference<List<BigDecimal>>() {});
 	        
 	        return coordinates.get(0);
 	    } catch (Exception e) {
@@ -88,10 +75,7 @@ public class PartnerService implements IPartnersService {
 
 	private BigDecimal getLatitude(Partner partner) {
 	    try {
-	        List<BigDecimal> coordinates = objectMapper.readValue(
-	            partner.getAddress().getCoordinates(),
-	            new TypeReference<List<BigDecimal>>() {}
-	        );
+	        List<BigDecimal> coordinates = objectMapper.readValue(partner.getAddress().getCoordinate(),new TypeReference<List<BigDecimal>>() {});
 	        
 	        return coordinates.get(1);
 	    } catch (Exception e) {
